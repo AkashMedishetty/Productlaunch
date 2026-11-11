@@ -32,3 +32,10 @@ qa/
 
 # generated print page
 anatomy/anatomy.html
+previz/out/*.blend1
+previz/assets/
+previz/out/
+*.blend
+NEW_CONCEPTS.md
+leave-behind/
+previzz_tmp/

@@ -1,0 +1,63 @@
+{
+  "id": "sunwall",
+  "name": "THE SUN WALL",
+  "mechanism": "Kinetic mirror-louvre wall driven by daylight",
+  "proposition": "At noon, the sun is the only light that matters. So the sun does the reveal.",
+  "tagline": "A black wall turns to mirror, the mirror turns to air, and the product is standing in the sun.",
+  "audience": "The audience sits down in full daylight facing two curved black walls, one in front of each product, the second taller and wider than the first. Each wall is made of several hundred small square tiles. Nothing glows, because nothing needs to. The chief guest places a palm on the console. A low line of tiles along the deck flips over one by one, carrying the cue to both walls. Then the walls answer: a wave runs round each curve from its front centre, every tile turning from matte black to mirror, and as each one turns it catches the sun for an instant, so a band of real sunlight flashes across the stage. For a few seconds the two walls are mirrors holding the sky and the audience. A second ripple runs back. Then every tile turns edge-on, the walls become thin slats, the slats draw apart like curtains, and both products are standing in direct sun.",
+  "hook": "Every other reveal fights the daylight. This one is powered by it.",
+  "stageDesign": "Two free-standing curved walls on the 56 x 20 ft deck, one wrapping the front and sides of each product: about 10.5 ft across and 9.5 ft high for the 5 x 5 ft product, about 13.5 ft across and 10 ft high for the 7 x 7 ft product. Each wall is a curved overhead track on four slim posts with a low guide rail on the deck; the back is open toward the LED wall. From the track hang vertical shafts at 8-inch centres, 32 on the first wall and 41 on the second, each carrying a stack of 13 or 14 square tiles, roughly 990 tiles in all. Every tile is two-sided: matte black on one face, brushed mirror-finish metal on the other. A touch console stands front centre, linked to both walls by a knee-high rail of the same flip tiles. The LED wall stays black until the walls have turned to mirror, then carries a calm warm field with no text.",
+  "concealment": "With the black faces out, each wall is a closed dark screen wrapping 240 degrees round its product, so the product is hidden from the centre aisle and from the side seats alike. The walls are taller than the products and the audience sits below deck level, so nothing is seen over the top. The inside of each wall is in its own shade, so the hairline joints between tiles read dark. The product's own accent lights stay off until the reveal.",
+  "guest": "The chief guest walks along the front of the deck to the console and places a palm on the touch plate. The plate is an input only: it requests a supervised cue which the show operator releases. The guest then steps back to the stage-left corner, clear of the walls and the deck rail, and watches the wave run. For the photograph the guest returns to centre between the two revealed products.",
+  "sequence": [
+    {
+      "time": "00:00-00:20",
+      "title": "Two black walls in the sun",
+      "detail": "Daylight, no effects. Two curved matte-black tile walls stand on the deck. The LED wall is black. The presenter introduces the launch."
+    },
+    {
+      "time": "00:20-00:30",
+      "title": "The palm",
+      "detail": "The chief guest places a palm on the console. The touch plate lights. The first tile on the deck rail flips to mirror."
+    },
+    {
+      "time": "00:30-00:40",
+      "title": "The fuse",
+      "detail": "The line of small tiles flips in sequence along the deck, left and right, each one flashing as it turns, until it reaches the foot of both walls."
+    },
+    {
+      "time": "00:40-00:55",
+      "title": "The sun wave",
+      "detail": "On each wall the tiles turn from black to mirror in a wave that starts at the front centre and runs round both sides. A band of sun-flash travels with it. The LED wall wakes behind."
+    },
+    {
+      "time": "00:55-01:10",
+      "title": "Mirror",
+      "detail": "Both walls are now mirrors holding the sky and the crowd. A second, slower ripple runs back from the ends to the centre."
+    },
+    {
+      "time": "01:10-01:25",
+      "title": "The walls open",
+      "detail": "Every shaft turns edge-on so the walls become see-through slats, then the slats draw apart round the track and park behind the products. Both products stand revealed in direct sunlight."
+    },
+    {
+      "time": "01:25-01:45",
+      "title": "Hero hold",
+      "detail": "CO2 jets fire upstage and metallic confetti drifts high behind the products, catching the sun. The guest and presenter step in for the official photograph."
+    }
+  ],
+  "tech": [
+    "Two-sided tiles on vertical shafts",
+    "One small motor per shaft (73 in total)",
+    "Curved traverse track, two drives per wall",
+    "Pixel-mapped motion control",
+    "Wind sensor and safe-park mode",
+    "Sun-path and glare study",
+    "CO2 jets and metallic confetti"
+  ],
+  "techDetail": "The tiles are light aluminium composite squares, about 8 inches, fixed to a slim vertical shaft: black powder-coat on one face, brushed stainless or mirror laminate on the other. Each shaft has one small stepper or servo motor in its carrier, so 73 motors move about 990 tiles; there are no per-tile actuators. The motors are addressed like lighting fixtures and the wave is a pre-programmed chase triggered by one cue. The carriers ride a curved overhead track, the same principle as a heavy-duty curved curtain or vertical-blind track, with a bottom guide rail so the shafts cannot swing. Two traverse drives per wall pull the carriers to the back ends of the track. The guest console is an input to show control, not a direct drive. The deck rail uses the same tile and motor at small scale.",
+  "feasibility": "The parts are proven separately: flip-disc and flip-dot displays, kinetic facades, motorised louvres and curved traverse tracks are all in regular use. Putting them together at this size as a turn-then-travel wall is a custom engineered piece and needs a workshop prototype of one shaft and a short section of track before fabrication. The walls are free-standing and ballasted on the deck; closed, each is a solid surface up to 10 ft high, so the frames and ballast must be calculated for site wind. The effect depends on sun: it is strongest from late morning to mid-afternoon with the sun in front of the stage, and softer but still legible under cloud because the black-to-mirror change does not need direct sun.",
+  "mitigation": "Wind: an anemometer on the truss; above the agreed limit the shafts park edge-on, which sheds most of the load, and the reveal runs as a straight traverse. Glare: a sun-path study for the date and hour fixes the tile finish and a slight downward cant so the direct reflection of the sun lands on the deck apron, not in the seating or the VIP row; brushed rather than optical mirror keeps the flash a soft bloom. Overcast day: the LED wall and four daylight-rated beam lights aimed at the walls stand in for the sun. Motor fault: any shaft that fails to turn is still carried clear by the traverse, so the product is always revealed. Budget: shafts can be ganged in groups of three or four on one motor, which keeps the wave and cuts the motor count to about 20.",
+  "signature": "The moment the black wall turns over and a band of real sunlight runs across the stage, in the middle of the day, with no lighting rig involved.",
+  "tier": "ENGINEERED"
+}
