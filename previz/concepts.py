@@ -65,11 +65,11 @@ def main():
             sc.render.filepath = os.path.join(out, f"still_{f:03d}.png")
             bpy.ops.render.render(write_still=True)
         print(f"STILLS {name} done")
-    if "--cycles" in argv:      # final-quality path-traced stills, e.g. --cycles 150,235
+    if "--final" in argv:      # final-quality path-traced stills, e.g. --cycles 150,235
         V.setup_render(sc, int(arg("--w", 1920)), int(arg("--h", 1080)), "CYCLES", int(arg("--samples", 96)))
         sc.cycles.volume_bounces = 1
         sc.view_settings.exposure = float(arg("--exposure", -0.35))
-        for f in [int(x) for x in arg("--cycles").split(",")]:
+        for f in [int(x) for x in arg("--final").split(",")]:
             sc.frame_set(f)
             sc.render.filepath = os.path.join(out, f"final_{f:03d}.png")
             t = time.time()
