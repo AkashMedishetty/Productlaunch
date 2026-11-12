@@ -210,10 +210,13 @@ def build(c):
     fascia_run(c, F_TOUCH + 4, F_SEAM, sig)
     z = DECK_H
     for i, p in enumerate(PRODUCTS):
-        x, y, s, h = p["x"], p["y"], p["size"] / 2 + 1.5, p["h"] + PL + 2.4
+        x, y, s, h = p["x"], p["y"], p["size"] / 2 + 1.5, p["h"] + PL + 1.2
         yf, yb = y + s, y - s
         t = 0.28                                       # wall / door thickness
-        # ---- fixed structure: skid, corner posts with castings, sides, back, header, roof light box
+        # ---- frame stays (skid, corner posts, roof light box); ALL FOUR WALLS are hinged at the base and fall outward
+        fh = empty(c, f"vault_fall_front_{i}", P(x, yf, z + 0.22))
+        bh = empty(c, f"vault_fall_back_{i}", P(x, yb, z + 0.22))
+        shs = {}
         box(c, "vault_skid", x - s - 0.15, x + s + 0.15, yb - 0.15, yf - 0.05, z, z + 0.22, frame, 0.01)
         for sx in (-1, 1):
             for sy in (-1, 1):
@@ -222,24 +225,25 @@ def build(c):
                 for zz in (z, z + h + 0.55):           # ISO-style corner castings
                     box(c, "vault_casting", px - 0.36, px + 0.36, py - 0.36, py + 0.36, zz, zz + 0.5, m_["steel_dark"], 0.03)
             xo = x + sx * s
-            box(c, "vault_side", min(xo, xo - sx * t), max(xo, xo - sx * t), yb + 0.5, yf - 0.5, z + 0.22, z + h, steelp, 0.005)
+            sh = shs[sx] = empty(c, f"vault_fall_side_{i}_{sx}", P(xo, y, z + 0.22))
+            parent(box(c, "vault_side", min(xo, xo - sx * t), max(xo, xo - sx * t), yb + 0.5, yf - 0.5, z + 0.22, z + h, steelp, 0.005), sh)
             n = 6 if s < 4.5 else 8
             for k in range(n):                         # pressed corrugation on the fixed sides
                 ry = yb + 0.5 + (k + 0.5) * (2 * s - 1.0) / n
-                box(c, "vault_side_rib", min(xo, xo + sx * 0.09), max(xo, xo + sx * 0.09), ry - 0.22, ry + 0.22, z + 0.45, z + h - 0.3, steelp, 0.02)
+                parent(box(c, "vault_side_rib", min(xo, xo + sx * 0.09), max(xo, xo + sx * 0.09), ry - 0.22, ry + 0.22, z + 0.45, z + h - 0.3, steelp, 0.02), sh)
             xi = xo - sx * t
-            box(c, "vault_side_liner", min(xi, xi - sx * 0.04), max(xi, xi - sx * 0.04), yb + 0.3, yf - 0.5, z + 0.22, z + h - 0.1, liner)
-            show_from(box(c, "vault_strip", min(xi - sx * 0.06, xi - sx * 0.2), max(xi - sx * 0.06, xi - sx * 0.2), yb + t + 0.06, yb + t + 0.2, z + 0.5, z + h - 0.4, warm), F_REVEAL - 2)
-        box(c, "vault_back", x - s + 0.5, x + s - 0.5, yb, yb + t, z + 0.22, z + h, steelp, 0.005)
-        box(c, "vault_back_liner", x - s + t, x + s - t, yb + t, yb + t + 0.04, z + 0.22, z + h - 0.1, liner)
+            parent(box(c, "vault_side_liner", min(xi, xi - sx * 0.04), max(xi, xi - sx * 0.04), yb + 0.3, yf - 0.5, z + 0.22, z + h - 0.1, liner), sh)
+            parent(show_from(box(c, "vault_strip", min(xi - sx * 0.06, xi - sx * 0.2), max(xi - sx * 0.06, xi - sx * 0.2), yb + t + 0.06, yb + t + 0.2, z + 0.5, z + h - 0.4, warm), F_REVEAL - 2), sh)
+        parent(box(c, "vault_back", x - s + 0.5, x + s - 0.5, yb, yb + t, z + 0.22, z + h, steelp, 0.005), bh)
+        parent(box(c, "vault_back_liner", x - s + t, x + s - t, yb + t, yb + t + 0.04, z + 0.22, z + h - 0.1, liner), bh)
         for k in range(1, 4):                          # service-panel joints on the back liner
             zz = z + 0.22 + k * (h - 0.3) / 4
-            box(c, "vault_liner_joint", x - s + 0.6, x + s - 0.6, yb + t + 0.04, yb + t + 0.055, zz - 0.02, zz + 0.02, frame)
+            parent(box(c, "vault_liner_joint", x - s + 0.6, x + s - 0.6, yb + t + 0.04, yb + t + 0.055, zz - 0.02, zz + 0.02, frame), bh)
         box(c, "vault_floor", x - s + t, x + s - t, yb + t, yf - 0.1, z + 0.22, z + 0.26, liner)
         hz0 = z + h - 0.75
-        box(c, "vault_header", x - s + 0.5, x + s - 0.5, yf - 0.5, yf + 0.03, hz0, z + h, frame, 0.01)
-        _chevrons(c, "vault_header_hazard_bg", x - s + 0.6, x + s - 0.6, yf + 0.035, z + h - 0.2, z + h - 0.06, hazard)
-        text(c, "vault_stencil", f"VAULT {p['name']}", P(x, yf + 0.04, hz0 + 0.3), 0.105, wink, spacing=1.7)
+        parent(box(c, "vault_header", x - s + 0.5, x + s - 0.5, yf - t, yf + 0.03, hz0, z + h, frame, 0.01), fh)
+        _chevrons(c, "vault_header_hazard_bg", x - s + 0.6, x + s - 0.6, yf + 0.035, z + h - 0.2, z + h - 0.06, hazard, fh)
+        parent(text(c, "vault_stencil", f"VAULT {p['name']}", P(x, yf + 0.04, hz0 + 0.3), 0.105, wink, spacing=1.7), fh)
         box(c, "vault_sill", x - s + 0.5, x + s - 0.5, yf - 0.4, yf + 0.03, z, z + 0.3, frame, 0.008)
         box(c, "vault_roof", x - s - 0.2, x + s + 0.2, yb - 0.2, yf + 0.2, z + h, z + h + 0.55, frame, 0.02)
         box(c, "vault_roof_cap", x - s + 0.3, x + s - 0.3, yb + 0.3, yf - 0.3, z + h + 0.55, z + h + 0.95, steelp, 0.03)
@@ -256,6 +260,7 @@ def build(c):
         for sg in (-1, 1):                             # -1: stage-left leaf, +1: stage-right leaf
             hx = x + sg * (s - 0.5)
             piv = empty(c, f"vault_hinge_{i}_{sg}", P(hx, yf, z))
+            parent(piv, fh)
             xa, xb = sorted((hx, x + sg * 0.02))
             parent(box(c, "vault_door", xa, xb, yf - t, yf, lz0, lz1, steelp, 0.008), piv)
             parent(box(c, "vault_door_inner", xa + 0.1, xb - 0.1, yf - t - 0.03, yf - t, lz0 + 0.1, lz1 - 0.1, inner), piv)
@@ -278,7 +283,7 @@ def build(c):
             for hk in (0.14, 0.5, 0.86):               # hinge knuckles on the post
                 zz = lz0 + (lz1 - lz0) * hk
                 parent(box(c, "vault_hinge_leaf", min(hx, hx + sg * -0.5), max(hx, hx + sg * -0.5), yf + 0.07, yf + 0.12, zz - 0.2, zz + 0.2, m_["steel_dark"], 0.01), piv)
-                box(c, "vault_hinge_knuckle", hx + sg * 0.02 - 0.09, hx + sg * 0.02 + 0.09, yf - 0.02, yf + 0.17, zz - 0.26, zz + 0.26, m_["steel_dark"], 0.03)
+                parent(box(c, "vault_hinge_knuckle", hx + sg * 0.02 - 0.09, hx + sg * 0.02 + 0.09, yf - 0.02, yf + 0.17, zz - 0.26, zz + 0.26, m_["steel_dark"], 0.03), piv)
             parent(box(c, "vault_hazard_band", xa + 0.2, xb - 0.2, yf + 0.06, yf + 0.075, lz0 + 0.2, lz0 + 0.85, hazard), piv)
             _chevrons(c, "vault_hazard_stripes", xa + 0.2, xb - 0.2, yf + 0.08, lz0 + 0.2, lz0 + 0.85, black, piv)
             mx = (xa + xb) / 2
@@ -301,17 +306,13 @@ def build(c):
                 for k in range(n):
                     za, zb = lz0 + (lockz - 0.4 - lz0) * k / n, lz0 + (lockz - 0.4 - lz0) * (k + 1) / n
                     show_from(parent(box(c, "vault_seam_pixels", x + 0.03, x + 0.15, yf + 0.07, yf + 0.1, za, zb - 0.03, sig), piv), F_SEAM + round(k * 8 / n))
-            # door stop on the deck + taped swing envelope
-            a_open = math.radians(OPEN_DEG)
-            tipx, tipy = hx - sg * wd * math.cos(a_open), yf + wd * math.sin(a_open)
-            sx_, sy_ = hx - sg * (wd * 0.8) * math.cos(a_open + 0.07), yf + (wd * 0.8) * math.sin(a_open + 0.07)
-            box(c, "vault_door_stop", sx_ - 0.2, sx_ + 0.2, sy_ - 0.2, sy_ + 0.2, z, z + 0.3, m_["rubber"], 0.03)
-            arc = [P(hx - sg * (wd + 0.25) * math.cos(a), yf + (wd + 0.25) * math.sin(a), z + 0.02) for a in [a_open * q / 14 for q in range(15)]]
-            tube(c, "vault_swing_tape", arc, 0.009, hazard)
-            f0 = F_REVEAL + i * 2 + (0 if sg < 0 else 2)
-            key(piv, f0, rot=(0, 0, 0))                # controlled burst: fast release, overshoot damped at the stop
-            key(piv, f0 + 16, rot=(0, 0, sg * math.radians(OPEN_DEG + 4)))
-            key(piv, f0 + 24, rot=(0, 0, sg * math.radians(OPEN_DEG)))
+        # ---- controlled burst: front, both sides and back fall outward to the deck; roof light box stays on its posts
+        f0 = F_REVEAL + i * 3
+        fall = math.radians(87)
+        for hinge, rot, d in ((fh, (fall, 0, 0), 0), (shs[-1], (0, -fall, 0), 3), (shs[1], (0, fall, 0), 3), (bh, (-fall, 0, 0), 6)):
+            key(hinge, f0 + d, rot=(0, 0, 0))
+            key(hinge, f0 + d + 24, rot=tuple(a * 1.012 for a in rot))     # lands, small settle
+            key(hinge, f0 + d + 30, rot=rot)
         # ---- deck signal: console -> channel -> this vault's threshold
         cx0 = CX - 1.5 if x < 0 else CX + 1.5
         lit_path(c, [(cx0, CY), (x, CY), (x, yf + 0.25)], F_TOUCH + 4, F_SEAM, sig, w=0.16)
